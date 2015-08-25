@@ -44,14 +44,14 @@
         {
             $GLOBALS['DB']->exec("INSERT INTO students (student_name, enrollment_date) VALUES (
                 '{$this->getStudentName()}',
-                '{$this->getEnrollmentName()}'
+                '{$this->getEnrollmentDate()}'
             );");
             $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
         function addCourse($course)
         {
-            $GLOBALS['DB']->exec("INSERT INTO students_courses (student_id, course_id) VALUES ({$category->getId()},
+            $GLOBALS['DB']->exec("INSERT INTO students_courses (student_id, course_id) VALUES ({$course->getId()},
             {$this->getId()});");
         }
 
@@ -97,7 +97,7 @@
         static function find($search_id)
         {
             $found_student = null;
-            $student = Student::getAll();
+            $students = Student::getAll();
             foreach ($students as $student) {
                 $student_id = $student->getId();
                 if ($student_id == $search_id) {
