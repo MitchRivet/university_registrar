@@ -230,31 +230,31 @@
 
             // *also currently not working
             //
-            // function test_getCourses()
-            // {
-            //     //Arrange
-            //     $course_name = "Being a bum";
-            //     $id = 1;
-            //     $test_course = new Course($course_name, $id);
-            //     $test_course->save();
-            //
-            //     $course_name = "Getting a toe";
-            //     $id2 = 2;
-            //     $test_course2 = new Course($course_name2, $id2);
-            //     $test_course2->save();
-            //
-            //     $student_name = "Jeff Lebowski";
-            //     $id3 = 3;
-            //     $test_student = new Student($student_name, $id3);
-            //     $test_student->save();
-            //
-            //     //Act
-            //     $test_student->addCourse($test_course);
-            //     $test_student->addCourse($test_course2);
-            //
-            //     //Assert
-            //     $this->assertEquals($test_student->getCourses(), [$test_course, $test_course2]);
-            // }
+            function test_getCourses()
+            {
+                //Arrange
+                $course_name = "Being a bum";
+                $id = 1;
+                $test_course = new Course($course_name, $id);
+                $test_course->save();
+
+                $course_name2 = "Getting a toe";
+                $id2 = 2;
+                $test_course2 = new Course($course_name2, $id2);
+                $test_course2->save();
+
+                $student_name = "Jeff Lebowski";
+                $id3 = 3;
+                $test_student = new Student($student_name, $id3);
+                $test_student->save();
+
+                //Act
+                $test_student->addCourse($test_course);
+                $test_student->addCourse($test_course2);
+
+                //Assert
+                $this->assertEquals($test_student->getCourses(), [$test_course, $test_course2]);
+            }
 
 
 
