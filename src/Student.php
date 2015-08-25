@@ -51,24 +51,24 @@
 
         function addCourse($course)
         {
-            $GLOBALS['DB']->exec("INSERT INTO students_courses (student_id, course_id) VALUES ({$course->getId()},
-            {$this->getId()});");
+            $GLOBALS['DB']->exec("INSERT INTO students_courses (student_id, course_id) VALUES ({$this->getId()},
+            {$course->getId()});");
         }
 
         function getCourses()
         {
-            $query = $GLOBALS['DB']->query("SELECT course_id FROM students_courses WHERE student_id = {$this->getId()};");
-            $course_ids = $query->fetchAll(PDO::FETCH_ASSOC);
-
+            $matching_courses = $GLOBALS['DB']->query(
+                "SELECT courses.* FROM
+                    students JOIN students_courses ON (students.id = students_courses.student_id)
+                             JOIN courses ON (students_courses.course_id = courses.id)
+                 WHERE students.id = {$this->getId()};
+                "
+            );
             $courses = array();
-            foreach($course_ids as $id) {
-                $course_id = $id['course_id'];
-                $course_query = $GLOBALS['DB']->query("SELECT * FROM courses WHERE id = {$course_id};");
-                $returned_course = $course_query->fetchAll(PDO::FETCH_ASSOC);
-
-                $course_name = $returned_course[0]['course_name'];
-                $couse_number = $returned_course[0]['course_number'];
-                $id = $returned_course[0]['id'];
+            foreach($matching_courses as $course) {
+                $course_name = $course['course_name'];
+                $course_number = $course['course_number'];
+                $id = $course['id'];
                 $new_course = new Course($course_name, $course_number, $id);
                 array_push($courses, $new_course);
             }
@@ -92,6 +92,7 @@
         static function deleteAll()
         {
             $GLOBALS['DB']->exec("DELETE FROM students;");
+            $GLOBALS['DB']->exec("DELETE FROM students_courses;");
         }
 
         static function find($search_id)

@@ -36,6 +36,10 @@
         {
             return $this->course_number;
         }
+        function setId($newId)
+        {
+            $this->id = $newId;
+        }
 
         function addStudentName($student_name)
         {
@@ -44,8 +48,9 @@
 
         function save()
         {
-            $GLOBALS['DB']->exec("INSERT INTO courses (course_name) VALUES ('{$this->getCourseName()}');");
-            $this->id = $GLOBALS['DB']->lastInsertId();
+            $GLOBALS['DB']->exec("INSERT INTO courses (course_name, course_number) VALUES ('{$this->getCourseName()}', '{$this->getCourseNumber()}');");
+            $result_id = $GLOBALS['DB']->lastInsertId();
+            $this->setId($result_id);
         }
 
         function update($new_course_name)
@@ -110,10 +115,10 @@
             $found_course = null;
             $courses = Course::getAll();
             foreach ($courses as $course) {
-            $course_id = $course->getId();
-            if ($course_id == $search_id){
-                $found_course = $course;
-            }
+                $course_id = $course->getId();
+                if ($course_id == $search_id){
+                    $found_course = $course;
+                }
             }
             return $found_course;
         }
